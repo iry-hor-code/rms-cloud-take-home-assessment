@@ -48,9 +48,9 @@ export class HomePage {
     await this.page.getByRole("button", { name: checkOutDate }).click();
   }
 
-  async increaseNumberOfGuests(childCountToAdd: number) {
+  async increaseNumberOfChildren(count: number) {
     await this.guestsTextbox.click();
-    for (let i = 0; i < childCountToAdd; i++) {
+    for (let i = 0; i < count; i++) {
       await this.guestSelectorPlusButton.click();
     }
   }

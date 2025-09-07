@@ -43,28 +43,34 @@ export class OrderConfirmationPage {
 
   async assertLoaded() {
     //Needed as sometimes the page was not fully loaded when the assertions were run.
+    await this.page.waitForLoadState("domcontentloaded");
     await this.page.waitForURL("**/bookingConfirmation/**");
+    
     await expect(this.reservationSummaryHeading).toBeVisible();
     await expect(this.printBookingButton).toBeVisible();
   }
 
-  async assertGuestDetails(name: string, email: string, mobile: string) {
+  async assertGuestDetails({ name, email, mobile }: { name: string; email: string; mobile: string }) {
     await expect(this.nameValue).toContainText(name);
     await expect(this.emailValue).toContainText(email);
     await expect(this.mobileValue).toContainText(mobile);
   }
 
-  async assertReservationDates(
-    durationText: string,
-    checkInDate: string,
-    checkOutDate: string,
-  ) {
+  async assertReservationDates({
+    durationText,
+    checkInDate,
+    checkOutDate,
+  }: {
+    durationText: string;
+    checkInDate: string;
+    checkOutDate: string;
+  }) {
     await expect(this.durationValue).toContainText(durationText);
     await expect(this.checkInValue).toContainText(checkInDate);
     await expect(this.checkOutValue).toContainText(checkOutDate);
   }
 
-  async assertPaymentSummaryContains(...texts: string[]) {
+  async assertPaymentSummaryContains({ texts }: { texts: string[] }) {
     for (const text of texts) {
       await expect(this.bookingSummary).toContainText(text);
     }
@@ -78,5 +84,30 @@ export class OrderConfirmationPage {
     await expect(this.propertyInformationText).toBeVisible();
     await expect(this.homeOutlinedIcon).toBeVisible();
     await expect(this.danielLakeyQATestingLink).toBeVisible();
+  }
+
+  async assertValidOrderConfirmation({
+    guestName,
+    guestEmail,
+    guestMobile,
+    durationText,
+    checkInDate,
+    checkOutDate,
+    maskedCard,
+  }: {
+    guestName: string;
+    guestEmail: string;
+    guestMobile: string;
+    durationText: string;
+    checkInDate: string;
+    checkOutDate: string;
+    maskedCard: string;
+  }) {
+    await this.assertLoaded();
+    await this.assertGuestDetails({ name: guestName, email: guestEmail, mobile: guestMobile });
+    await this.assertReservationDates({ durationText, checkInDate, checkOutDate });
+    await this.assertPaymentSummaryContains({ texts: ["Card", "Total Amount"] });
+    await this.assertMaskedCard(maskedCard);
+    await this.assertPropertyInformationVisible();
   }
 }

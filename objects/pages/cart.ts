@@ -120,16 +120,16 @@ export class CartPage {
   }
 
   //TODO: Refactor this to use a more robust method of selecting the date of birth.
-  async selectDateOfBirth() {
+  async selectDateOfBirth({ month = "January", day = "1", year = "2000" }: { month?: string; day?: string; year?: string } = {}) {
     await this.birthdayCombobox.click();
     await this.page.getByRole("button", { name: "September 2025" }).click();
     await this.page.getByRole("button", { name: "2025" }).click();
     await this.page.getByRole("button", { name: "Previous page" }).click();
     await this.page.getByRole("button", { name: "Previous page" }).click();
-    await this.page.getByRole("button", { name: "2000" }).click();
-    await this.page.getByRole("button", { name: "January" }).click();
+    await this.page.getByRole("button", { name: year }).click();
+    await this.page.getByRole("button", { name: month }).click();
     await this.page
-      .getByRole("button", { name: "Saturday, January 1," })
+      .getByRole("button", { name: `Saturday, ${month} ${day},` })
       .click();
   }
 
