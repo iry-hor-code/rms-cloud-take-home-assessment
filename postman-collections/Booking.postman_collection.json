@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "c02a1c20-b7fe-4db4-8ac5-1935d577f152",
+		"name": "Booking",
+		"description": "RMS Cloud Booking API collection with comprehensive testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48228879",
+		"_collection_link": "https://iry-hor-code-2868581.postman.co/workspace/iry-hor-api's-Workspace~2e4a9176-0e5f-460f-80e5-97f5589b1653/collection/48228879-c02a1c20-b7fe-4db4-8ac5-1935d577f152?action=share&source=collection_link&creator=48228879"
+	},
+	"item": [
+		{
+			"name": "Add Booking",
+			"event": [
+				{
+					"listen": "prerequest",
+			"script": {
+				"exec": [],
+				"type": "text/javascript"
+			}
+				},
+				{
+			"listen": "test",
+			"script": {
+				"exec": [
+					"// Valid booking request should return success",
+					"pm.test('Response time is acceptable', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});",
+					"",
+					"pm.test('Valid booking request returns success', function () {",
+					"    pm.expect(pm.response.code).to.equal(200);",
+					"});",
+					"",
+					"pm.test('Success response contains booking data', function () {",
+					"    const responseJson = pm.response.json();",
+					"    pm.expect(responseJson).to.have.property('sCurrencyCode');",
+					"    ",
+					"    // Store cart ID for future requests",
+					"    if (responseJson.cartId) {",
+					"        pm.environment.set('lastCartId', responseJson.cartId);",
+					"    }",
+					"});"
+				],
+				"type": "text/javascript"
+			}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/plain, */*",
+						"description": "Acceptable response content types"
+					},
+					{
+						"key": "accept-language",
+						"value": "en-GB,en;q=0.8",
+						"description": "Preferred language for response"
+					},
+					{
+						"key": "Cookie",
+						"value": "__stripe_mid={{stripe_mid}}; ApiCookie={{api_cookie}}; __stripe_sid={{stripe_sid}}; _dd_s={{dd_session}}",
+						"description": "Authentication and session cookies"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i",
+						"description": "Request priority hint"
+					},
+					{
+						"key": "referer",
+						"value": "{{base_url}}/{{client_id}}/1",
+						"description": "Referrer page URL"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Brave\";v=\"140\"",
+						"description": "Client user agent hints"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"description": "Mobile device indicator"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"macOS\"",
+						"description": "Client platform information"
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty",
+						"description": "Request destination type"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors",
+						"description": "Request mode for CORS"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "same-origin",
+						"description": "Request site relationship"
+					},
+					{
+						"key": "sec-gpc",
+						"value": "1",
+						"description": "Global Privacy Control signal"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+						"description": "Client user agent string"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/OnlineApi/AddBooking?clientId={{client_id}}&agentId={{agent_id}}&Qs={{encoded_query_string}}&av={{api_version}}&adults={{adults}}&children={{children}}&infants={{infants}}&CartId={{cart_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"OnlineApi",
+						"AddBooking"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{client_id}}",
+							"description": "Unique client identifier for the booking system"
+						},
+						{
+							"key": "agentId",
+							"value": "{{agent_id}}",
+							"description": "Agent ID handling the booking request"
+						},
+						{
+							"key": "Qs",
+							"value": "{{encoded_query_string}}",
+							"description": "Encoded query string containing booking parameters"
+						},
+						{
+							"key": "av",
+							"value": "{{api_version}}",
+							"description": "API version number"
+						},
+						{
+							"key": "adults",
+							"value": "{{adults}}",
+							"description": "Number of adult guests"
+						},
+						{
+							"key": "children",
+							"value": "{{children}}",
+							"description": "Number of child guests"
+						},
+						{
+							"key": "infants",
+							"value": "{{infants}}",
+							"description": "Number of infant guests"
+						},
+						{
+							"key": "CartId",
+							"value": "{{cart_id}}",
+							"description": "Shopping cart identifier (can be empty for new bookings)"
+						}
+					]
+				},
+				"description": "Creates a new booking in the RMS Cloud system. This endpoint handles the initial booking creation with guest details and cart information."
+			},
+			"response": [
+				{
+					"name": "Successful Booking Response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "Cookie",
+								"value": "__stripe_mid=d5d06d7f-ee4d-47c4-9dd8-f7d46867e26a498461; ApiCookie=valid_token_here"
+							}
+						],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"cartId\": \"2dd1e77b-7c50-4627-8124-ae08046ecf72\",\n    \"bShowCart\": false,\n    \"bShowMessage\": false,\n    \"sMessage\": \"Sorry, but it looks like this area is no longer available, please select another.\",\n    \"sMessageTitle\": \"Area is unavailable\",\n    \"nGrandTotal\": 0,\n    \"nDiscountTotal\": 0,\n    \"nTaxesTotal\": 0,\n    \"nExtrasTotal\": 0,\n    \"nBookingAndCreditCardFee\": 0,\n    \"sCurrencySymbol\": null,\n    \"sCurrencyCode\": \"AUD\",\n    \"oSiblings\": [],\n    \"bHasAutoDiscount\": false,\n    \"bShowDiscountMessage\": false,\n    \"discountSelected\": null,\n    \"gA4CartEvent\": null,\n    \"extrasAvailable\": false\n}"
+				},
+				{
+					"name": "Authentication Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json, text/plain, */*"
+							}
+						],
+						"url": {
+							"raw": ""
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"error\": \"Unauthorized\",\n    \"message\": \"Invalid or missing authentication credentials\",\n    \"errorCode\": \"AUTH_001\",\n    \"timestamp\": \"2024-01-15T10:30:00Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Add Booking - Missing Required Parameters",
+			"event": [
+				{
+					"listen": "test",
+			"script": {
+				"exec": [
+					"pm.test('Missing required parameters returns bad request', function () {",
+					"    pm.expect(pm.response.code).to.equal(400);",
+					"});",
+					"",
+					"pm.test('Error response provides validation message', function () {",
+					"    const responseText = pm.response.text();",
+					"    pm.expect(responseText.length).to.be.greaterThan(0);",
+					"});"
+				],
+				"type": "text/javascript"
+			}
+				}
+			],
+		"request": {
+			"method": "GET",
+			"header": [
+				{
+					"key": "accept",
+					"value": "application/json, text/plain, */*"
+				},
+				{
+					"key": "Cookie",
+					"value": "__stripe_mid={{stripe_mid}}; ApiCookie={{api_cookie}}; __stripe_sid={{stripe_sid}}; _dd_s={{dd_session}}",
+					"description": "Authentication and session cookies"
+				}
+			],
+			"url": {
+				"raw": "{{base_url}}/OnlineApi/AddBooking?clientId={{client_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"OnlineApi",
+						"AddBooking"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{client_id}}",
+							"description": "Only clientId provided - missing required agentId and adults"
+						}
+					]
+				},
+				"description": "Test case for missing required parameters (agentId and adults missing)"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Booking - Invalid Data Types",
+			"event": [
+				{
+					"listen": "test",
+			"script": {
+				"exec": [
+					"pm.test('Invalid data types return validation error', function () {",
+					"    pm.expect(pm.response.code).to.equal(422);",
+					"});"
+				],
+				"type": "text/javascript"
+			}
+				}
+			],
+		"request": {
+			"method": "GET",
+			"header": [
+				{
+					"key": "accept",
+					"value": "application/json, text/plain, */*"
+				},
+				{
+					"key": "Cookie",
+					"value": "__stripe_mid={{stripe_mid}}; ApiCookie={{api_cookie}}; __stripe_sid={{stripe_sid}}; _dd_s={{dd_session}}",
+					"description": "Authentication and session cookies"
+				}
+			],
+			"url": {
+				"raw": "{{base_url}}/OnlineApi/AddBooking?clientId={{client_id}}&agentId=invalid_agent&adults=not_a_number&children=abc",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"OnlineApi",
+						"AddBooking"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{client_id}}"
+						},
+						{
+							"key": "agentId",
+							"value": "invalid_agent",
+							"description": "Invalid non-numeric agentId"
+						},
+						{
+							"key": "adults",
+							"value": "not_a_number",
+							"description": "Invalid non-numeric adults count"
+						},
+						{
+							"key": "children",
+							"value": "abc",
+							"description": "Invalid non-numeric children count"
+						}
+					]
+				},
+				"description": "Test case for invalid data types in numeric parameters"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Booking - Boundary Values",
+			"event": [
+				{
+					"listen": "test",
+			"script": {
+				"exec": [
+					"pm.test('Zero adults returns validation error', function () {",
+					"    pm.expect(pm.response.code).to.equal(422);",
+					"});"
+				],
+				"type": "text/javascript"
+			}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Cookie",
+						"value": "__stripe_mid={{stripe_mid}}; ApiCookie={{api_cookie}}; __stripe_sid={{stripe_sid}}; _dd_s={{dd_session}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/OnlineApi/AddBooking?clientId={{client_id}}&agentId={{agent_id}}&adults=0&children=5&infants=2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"OnlineApi",
+						"AddBooking"
+					],
+					"query": [
+						{
+							"key": "clientId",
+							"value": "{{client_id}}"
+						},
+						{
+							"key": "agentId",
+							"value": "{{agent_id}}"
+						},
+						{
+							"key": "adults",
+							"value": "0",
+							"description": "Zero adults - should be rejected"
+						},
+						{
+							"key": "children",
+							"value": "5"
+						},
+						{
+							"key": "infants",
+							"value": "2"
+						}
+					]
+				},
+				"description": "Test case for boundary value - zero adults (should be rejected)"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": 		"prerequest",
+		"script": {
+			"type": "text/javascript",
+			"exec": []
+		}
+		},
+		{
+			"listen": 		"test",
+		"script": {
+			"type": "text/javascript",
+			"exec": []
+		}
+		}
+	],
+	"variable": [
+		{
+			"key": "collection_version",
+			"value": "1.0.2",
+			"type": "string"
+		}
+	]
+}
