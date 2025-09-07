@@ -1,0 +1,3 @@
+# Config files that shouldn't be formatted
+*.config.js
+*.config.mjs
