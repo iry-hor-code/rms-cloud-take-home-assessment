@@ -12,6 +12,6 @@
     "allowSyntheticDefaultImports": true,
     "types": ["node", "@playwright/test"]
   },
-  "include": ["tests/**/*", "objects/**/*", "playwright.config.ts"],
+  "include": ["src/tests/**/*", "src/objects/**/*", "playwright.config.ts", "src/fixtures.ts"],
   "exclude": ["node_modules", "playwright-report", "test-results"]
 }

@@ -12,6 +12,7 @@ export class CartPage {
   readonly phoneAhTextbox: Locator;
   readonly genderCombobox: Locator;
   readonly birthdayCombobox: Locator;
+  readonly setButton: Locator;
   readonly resNoteTextbox: Locator;
   readonly payButton: Locator;
   readonly nameOnCardTextbox: Locator;
@@ -22,9 +23,11 @@ export class CartPage {
   readonly cardNumberTextbox: Locator;
   readonly expiryDateTextbox: Locator;
   readonly securityCodeTextbox: Locator;
+  readonly isMobile: boolean;
 
-  constructor(page: Page) {
+  constructor(page: Page, opts?: { isMobile?: boolean }) {
     this.page = page;
+    this.isMobile = !!opts?.isMobile;
     this.titleCombobox = page.getByRole("combobox", { name: "Title" });
     this.firstNameTextbox = page.getByRole("textbox", { name: "First Name *" });
     this.lastNameTextbox = page.getByRole("textbox", { name: "Last Name *" });
@@ -37,6 +40,7 @@ export class CartPage {
     this.phoneAhTextbox = page.getByRole("textbox", { name: "Phone AH" });
     this.genderCombobox = page.getByRole("combobox", { name: "Gender" });
     this.birthdayCombobox = page.getByRole("combobox", { name: "Birthday" });
+    this.setButton = page.getByRole("button", { name: "SET" });
     this.resNoteTextbox = page.getByRole("textbox", { name: "Res Note" });
     this.payButton = page.getByTestId("book-now-btn-summary");
     this.nameOnCardTextbox = page.getByRole("textbox", {
@@ -131,6 +135,11 @@ export class CartPage {
     await this.page
       .getByRole("button", { name: `Saturday, ${month} ${day},` })
       .click();
+
+    // Click Set button only on mobile devices
+    if (this.isMobile) {
+      await this.setButton.click();
+    }
   }
 
   async clickPay() {

@@ -1,15 +1,9 @@
-import { test } from "@playwright/test";
-import { HomePage } from "../objects/pages/home";
-import { CartPage } from "../objects/pages/cart";
-import { OrderConfirmationPage } from "../objects/pages/order-confirmation";
-import { validGuestDetails, additionalGuestDetails } from "../test-data/guest-data";
-import { validCardDetails, expectedMaskedCard } from "../test-data/card-data";
+import { test } from "../fixtures";
+import { validGuestDetails, additionalGuestDetails } from "../../test-data/guest-data";
+import { validCardDetails, expectedMaskedCard } from "../../test-data/card-data";
 
 //TODO: Clear bookings via API in after hook to prevent system from becoming booked out.
-test("user can complete a successful checkout", async ({ page }) => {
-  const home = new HomePage(page);
-  const cart = new CartPage(page);
-  const orderConfirmation = new OrderConfirmationPage(page);
+test("user can complete a successful checkout", async ({ home, cart, orderConfirmation }) => {
 
   await home.goto();
   await home.increaseNumberOfChildren(2);

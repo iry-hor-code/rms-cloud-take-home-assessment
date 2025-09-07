@@ -14,10 +14,13 @@ export class OrderConfirmationPage {
   readonly cardMaskedValue: Locator;
   readonly propertyInformationText: Locator;
   readonly homeOutlinedIcon: Locator;
+  readonly homeOutlinedIconSecond: Locator;
   readonly danielLakeyQATestingLink: Locator;
+  readonly isMobile: boolean;
 
-  constructor(page: Page) {
+  constructor(page: Page, opts?: { isMobile?: boolean }) {
     this.page = page;
+    this.isMobile = !!opts?.isMobile;
     this.reservationSummaryHeading = page.getByRole("heading", {
       name: "Reservation Summary",
     });
@@ -36,6 +39,7 @@ export class OrderConfirmationPage {
       .locator("span");
     this.propertyInformationText = page.getByText("Property Information");
     this.homeOutlinedIcon = page.getByTestId("HomeOutlinedIcon");
+    this.homeOutlinedIconSecond = page.getByTestId("HomeOutlinedIcon").nth(0);
     this.danielLakeyQATestingLink = page.getByRole("link", {
       name: "Daniel Lakey QA Testing",
     });
@@ -47,7 +51,10 @@ export class OrderConfirmationPage {
     await this.page.waitForURL("**/bookingConfirmation/**");
     
     await expect(this.reservationSummaryHeading).toBeVisible();
-    await expect(this.printBookingButton).toBeVisible();
+
+    if (!this.isMobile) {
+      await expect(this.printBookingButton).toBeVisible();
+    }
   }
 
   async assertGuestDetails({ name, email, mobile }: { name: string; email: string; mobile: string }) {
@@ -82,7 +89,14 @@ export class OrderConfirmationPage {
 
   async assertPropertyInformationVisible() {
     await expect(this.propertyInformationText).toBeVisible();
-    await expect(this.homeOutlinedIcon).toBeVisible();
+
+    //TODO: Make this more robust by removing the second hidden home outlined icon that exists only on mobile.
+    if (!this.isMobile) {
+      await expect(this.homeOutlinedIcon).toBeVisible();
+    } else {
+      await expect(this.homeOutlinedIconSecond).toBeVisible();
+    }
+    
     await expect(this.danielLakeyQATestingLink).toBeVisible();
   }
 
